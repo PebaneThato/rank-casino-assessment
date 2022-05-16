@@ -20,7 +20,7 @@ public class Balance  {
     @Id
     private Long id;
 
-    private String userId;
+    private String playerId;
 
     private String transactionId;
 
