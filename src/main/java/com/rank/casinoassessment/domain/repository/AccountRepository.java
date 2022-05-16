@@ -1,2 +1,7 @@
-package com.rank.casinoassessment.domain.repository;public class AccountRepository {
+package com.rank.casinoassessment.domain.repository;
+
+import com.rank.casinoassessment.domain.entity.Account;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface AccountRepository extends JpaRepository<Account, Long> {
 }
