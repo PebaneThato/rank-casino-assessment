@@ -4,11 +4,9 @@ import com.rank.casinoassessment.domain.entity.Balance;
 import com.rank.casinoassessment.domain.entity.Transaction;
 import com.rank.casinoassessment.service.CasinoBalanceTransactionService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,14 +21,20 @@ public class CasinoBalanceTransactionController {
     }
 
     @GetMapping("/player/{playerId}/balance")
-    public ResponseEntity<Balance> getBalanceById(@PathVariable(value = "playerId") Long playerId) {
-        Optional<Balance> accountOpt = casinoBalanceTransactionService.getBalanceById(playerId);
-        return accountOpt.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    public ResponseEntity<Balance> getBalanceById(@PathVariable(value = "playerId") String playerId) {
+        Optional<Balance> balanceOpt = casinoBalanceTransactionService.getBalanceByPlayerId(playerId);
+        return balanceOpt.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/balance/list")
-    public List<Balance> getAccounts() {
-        return casinoBalanceTransactionService.getBalances();
+    @PostMapping("/player/{playerId}/balance/update")
+    public Balance updateBalanceByPlayerId(@PathVariable(value = "playerId") String playerId) {
+        Balance balanceOpt = casinoBalanceTransactionService.updateBalance(playerId, new BigDecimal("0.01"), "win");
+        return balanceOpt;
+    }
+
+    @PostMapping("/admin/player/transactions")
+    public List<Transaction> getAccounts() {
+        return casinoBalanceTransactionService.findTop10ByUsername("player09");
     }
 
 }
