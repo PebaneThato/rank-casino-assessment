@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 
 @Entity
 @Table(name = "transaction")
@@ -20,7 +21,7 @@ public class Transaction  {
     @Id
     private Long id;
 
-    private String transactionId;
+    private BigInteger transactionId;
 
     private String transactionType;
 

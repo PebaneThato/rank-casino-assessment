@@ -1,14 +1,16 @@
 package com.rank.casinoassessment.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rank.casinoassessment.domain.entity.Balance;
 import com.rank.casinoassessment.domain.entity.Transaction;
+import com.rank.casinoassessment.dto.*;
 import com.rank.casinoassessment.service.CasinoBalanceTransactionService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/casino")
@@ -21,20 +23,26 @@ public class CasinoBalanceTransactionController {
     }
 
     @GetMapping("/player/{playerId}/balance")
-    public ResponseEntity<Balance> getBalanceById(@PathVariable(value = "playerId") String playerId) {
-        Optional<Balance> balanceOpt = casinoBalanceTransactionService.getBalanceByPlayerId(playerId);
-        return balanceOpt.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    public GetBalanceResponse getBalanceById(@PathVariable(value = "playerId") String playerId) {
+        int playerIdValue = Integer.parseInt(playerId);
+        Balance balance = casinoBalanceTransactionService.getBalanceByPlayerId(playerIdValue);
+        return new GetBalanceResponse(balance);
     }
 
     @PostMapping("/player/{playerId}/balance/update")
-    public Balance updateBalanceByPlayerId(@PathVariable(value = "playerId") String playerId) {
-        Balance balanceOpt = casinoBalanceTransactionService.updateBalance(playerId, new BigDecimal("0.01"), "win");
-        return balanceOpt;
+    public UpdateBalanceResponse updateBalanceByPlayerId(@PathVariable(value = "playerId") String playerId, @RequestBody UpdateBalanceRequest updateBalanceRequest) {
+        int playerIdValue = Integer.parseInt(playerId);
+        Balance balance = casinoBalanceTransactionService.updateBalance(playerIdValue, new BigDecimal(updateBalanceRequest.getAmount()), updateBalanceRequest.getTransactionType());
+        return new UpdateBalanceResponse(balance);
     }
 
     @PostMapping("/admin/player/transactions")
-    public List<Transaction> getAccounts() {
-        return casinoBalanceTransactionService.findTop10ByUsername("player09");
+    public List<last10TXTResponse> getLast10ByUsername(@RequestBody Last10TXTRequest last10TXTRequest) {
+        List<Transaction> transactions = casinoBalanceTransactionService.findTop10ByUsername(last10TXTRequest.getUsername());
+        ObjectMapper mapper = new ObjectMapper();
+        return transactions.stream()
+                .map(object -> new last10TXTResponse(object))
+                .collect(Collectors.toList());
     }
 
 }

@@ -18,13 +18,12 @@ public class CasinoBalanceTransactionService {
     @Autowired
     private TransactionRepository transactionRepository;
 
-    public Optional<Balance> getBalanceByPlayerId(String playerId) {
+    public Balance getBalanceByPlayerId(Integer playerId) {
         return  balanceRepository.findFirstByPlayerId(playerId);
     }
 
-    public Balance updateBalance(String playerId, BigDecimal balance, String transactionType) {
-        Optional<Balance> myCustomer = getBalanceByPlayerId(playerId);
-        Balance currentBalance = myCustomer.get();
+    public Balance updateBalance(Integer playerId, BigDecimal balance, String transactionType) {
+        Balance currentBalance = getBalanceByPlayerId(playerId);
         currentBalance.setBalance(balance);
         currentBalance.setTransactionType(transactionType);
         return balanceRepository.save(currentBalance);
