@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rank.casinoassessment.domain.entity.Balance;
 import com.rank.casinoassessment.domain.entity.Transaction;
 import com.rank.casinoassessment.dto.*;
+import com.rank.casinoassessment.exception.RankCasinoBadRequestException;
 import com.rank.casinoassessment.service.CasinoBalanceTransactionService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,16 +24,16 @@ public class CasinoBalanceTransactionController {
     }
 
     @GetMapping("/player/{playerId}/balance")
-    public GetBalanceResponse getBalanceById(@PathVariable(value = "playerId") String playerId) {
-        int playerIdValue = Integer.parseInt(playerId);
-        Balance balance = casinoBalanceTransactionService.getBalanceByPlayerId(playerIdValue);
+    public GetBalanceResponse getBalanceById(@PathVariable(value = "playerId") Integer playerId) {
+        Balance balance = casinoBalanceTransactionService.getBalanceByPlayerId(playerId);
         return new GetBalanceResponse(balance);
     }
 
     @PostMapping("/player/{playerId}/balance/update")
-    public UpdateBalanceResponse updateBalanceByPlayerId(@PathVariable(value = "playerId") String playerId, @RequestBody UpdateBalanceRequest updateBalanceRequest) {
-        int playerIdValue = Integer.parseInt(playerId);
-        Balance balance = casinoBalanceTransactionService.updateBalance(playerIdValue, new BigDecimal(updateBalanceRequest.getAmount()), updateBalanceRequest.getTransactionType());
+    public UpdateBalanceResponse updateBalanceByPlayerId(@PathVariable(value = "playerId") Integer playerId, @RequestBody UpdateBalanceRequest updateBalanceRequest) {
+        if(updateBalanceRequest.getAmount().compareTo(BigDecimal.ZERO) < 0)
+            throw new RankCasinoBadRequestException("Negative amount is not allowed");
+        Balance balance = casinoBalanceTransactionService.updateBalance(playerId, updateBalanceRequest.getAmount(), updateBalanceRequest.getTransactionType());
         return new UpdateBalanceResponse(balance);
     }
 

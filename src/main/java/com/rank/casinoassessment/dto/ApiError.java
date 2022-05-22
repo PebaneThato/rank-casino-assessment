@@ -4,14 +4,16 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.http.HttpStatus;
 
-import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UpdateBalanceRequest {
-    private BigDecimal amount;
-    private String transactionType;
+public class ApiError {
+    LocalDateTime timestamp;
+    HttpStatus status;
+    String message;
 }
