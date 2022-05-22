@@ -1,6 +1,6 @@
 package com.rank.casinoassessment.dto;
 
-import com.rank.casinoassessment.domain.entity.Balance;
+import com.rank.casinoassessment.entity.Balance;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

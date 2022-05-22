@@ -1,12 +1,11 @@
 package com.rank.casinoassessment.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.rank.casinoassessment.domain.entity.Balance;
-import com.rank.casinoassessment.domain.entity.Transaction;
+import com.rank.casinoassessment.entity.Balance;
+import com.rank.casinoassessment.entity.Transaction;
 import com.rank.casinoassessment.dto.*;
 import com.rank.casinoassessment.exception.RankCasinoBadRequestException;
 import com.rank.casinoassessment.service.CasinoBalanceTransactionService;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;

@@ -1,6 +1,6 @@
-package com.rank.casinoassessment.domain.repository;
+package com.rank.casinoassessment.repository;
 
-import com.rank.casinoassessment.domain.entity.Transaction;
+import com.rank.casinoassessment.entity.Transaction;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

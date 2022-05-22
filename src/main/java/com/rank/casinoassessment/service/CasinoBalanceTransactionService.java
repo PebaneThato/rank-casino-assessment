@@ -1,17 +1,17 @@
 package com.rank.casinoassessment.service;
 
-import com.rank.casinoassessment.domain.entity.Balance;
-import com.rank.casinoassessment.domain.entity.Transaction;
-import com.rank.casinoassessment.domain.repository.BalanceRepository;
-import com.rank.casinoassessment.domain.repository.TransactionRepository;
+import com.rank.casinoassessment.entity.Balance;
+import com.rank.casinoassessment.entity.Transaction;
+import com.rank.casinoassessment.repository.BalanceRepository;
+import com.rank.casinoassessment.repository.TransactionRepository;
 import com.rank.casinoassessment.exception.RankCasinoBadRequestException;
 import com.rank.casinoassessment.exception.RankCasinoTeapotException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class CasinoBalanceTransactionService {
@@ -32,6 +32,7 @@ public class CasinoBalanceTransactionService {
         return balance;
     }
 
+    @Transactional
     public Balance updateBalance(Integer playerId, BigDecimal amount, String transactionType) {
         Balance currentBalance = getBalanceByPlayerId(playerId);
         if(transactionType != null && transactionType.equalsIgnoreCase(TransactionType.WAGER.name()) && amount.compareTo(currentBalance.getBalance()) > 0 )

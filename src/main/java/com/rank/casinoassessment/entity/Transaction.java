@@ -1,4 +1,4 @@
-package com.rank.casinoassessment.domain.entity;
+package com.rank.casinoassessment.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,20 +12,20 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 
 @Entity
-@Table(name = "balance")
+@Table(name = "transaction")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Balance  {
+public class Transaction  {
     @Id
     private Long id;
-
-    private int playerId;
 
     private BigInteger transactionId;
 
     private String transactionType;
 
-    private BigDecimal balance;
+    private String username;
+
+    private BigDecimal amount;
 }
